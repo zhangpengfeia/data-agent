@@ -10,32 +10,32 @@ logging:
     level: INFO
 
 db_meta:
-  host: 192.168.200.10
+  host: 152.136.228.231
   port: 3306
   user: atguigu
   password: Atguigu.123
   database: meta
 
 db_dw:
-  host: 192.168.200.10
+  host: 152.136.228.231
   port: 3306
   user: atguigu
   password: Atguigu.123
   database: dw
 
 qdrant:
-  host: 192.168.200.10
+  host: 152.136.228.231
   port: 6333
   embedding_size: 1024
 
 embedding:
-  host: 192.168.200.10
+  host: 152.136.228.231
   port: 8081
   model: BAAI/bge-large-zh-v1.5
 
 
 es:
-  host: 192.168.200.10
+  host: 152.136.228.231
   port: 9200
   index_name: data_agent
 
