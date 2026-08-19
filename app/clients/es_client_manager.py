@@ -12,12 +12,27 @@ class ESClientManager:
         self.client: Optional[AsyncElasticsearch] = None
 
     def _get_url(self):
-        return f"http://{self.config.host}:{self.config.port}"
+        return f"{self.config.scheme}://{self.config.host}:{self.config.port}"
 
     def init(self):
-        self.client = AsyncElasticsearch(
-            hosts=self._get_url()
-        )
+        # 腾讯云 ES：HTTPS + Basic Auth + 自签名证书处理
+        kwargs = {
+            "hosts": self._get_url(),
+        }
+        # 用户名/密码鉴权（不填则跳过，兼容本地裸跑的 ES）
+        if self.config.user:
+            kwargs["basic_auth"] = (self.config.user, self.config.password)
+        # HTTPS 证书校验
+        if self.config.scheme == "https":
+            kwargs["verify_certs"] = self.config.verify_certs
+            # 配置了 CA 证书则按证书校验
+            if self.config.ca_certs:
+                kwargs["ca_certs"] = self.config.ca_certs
+                kwargs["verify_certs"] = True
+            # 关闭校验时一并关闭告警，避免刷屏
+            if not kwargs["verify_certs"]:
+                kwargs["ssl_show_warn"] = False
+        self.client = AsyncElasticsearch(**kwargs)
 
     async def close(self):
         if self.client:

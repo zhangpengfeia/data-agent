@@ -31,13 +31,20 @@ qdrant:
 embedding:
   host: 152.136.228.231
   port: 8081
-  model: BAAI/bge-large-zh-v1.5
+  # 本地 BGE-M3 模型路径
+  model: /Users/a123/D盘/学习/尚硅谷/bge-large-zh-v1.5
 
 
 es:
-  host: 152.136.228.231
+  # 腾讯云 Elasticsearch Service 公网访问地址
+  host: es-jqd93oyw.public.tencentelasticsearch.com
   port: 9200
   index_name: data_agent
+  scheme: https
+  user: elastic                        # 你的用户名
+  password: Swdwlsnyt920.              # 你的密码
+  verify_certs: true                   # https 模式，腾讯云证书默认受信任
+  ca_certs:                            # 留空
 
 
 llm:

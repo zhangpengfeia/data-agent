@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 from omegaconf import OmegaConf
-
-from app.core.log import logger
 
 
 # 日志配置
@@ -57,6 +56,11 @@ class ESConfig:
     host: str
     port: int
     index_name: str
+    scheme: str = "http"                # 协议：http / https
+    user: Optional[str] = None         # 用户名，腾讯云默认 elastic
+    password: Optional[str] = None     # 访问密码
+    verify_certs: bool = False         # 是否校验证书；自签名证书可设 False
+    ca_certs: Optional[str] = None     # CA 证书路径，配置后开启校验
 
 
 @dataclass
@@ -84,6 +88,8 @@ structured = OmegaConf.structured(AppConfig)
 app_config: AppConfig = OmegaConf.to_object(OmegaConf.merge(structured, context))
 
 if __name__ == '__main__':
+    from app.core.log import logger
+
     # print(app_config)
     # print(app_config.db_dw.host, app_config.db_dw.database)
 
