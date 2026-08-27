@@ -58,11 +58,16 @@ if __name__ == '__main__':
         description='通过脚本+额外脚本(-c 传递)参数实现',
         epilog='========结束==========')
     #1.2 添加可选参数
-    parser.add_argument('-c', '--conf')
+    parser.add_argument(
+        '-c',
+        '--conf',
+        type=Path,
+        default=Path(__file__).parents[2] / 'conf' / 'meta_config.yaml'
+    )
     #1.3 调用函数将提取到脚本参数封装到Namespace对象
     parse_args = parser.parse_args()
     #1.4 获取到脚本参数中-yaml文件路径
-    config_path: Path = Path(parse_args.conf)
+    config_path: Path = parse_args.conf
 
     #2.执行构建元数据知识库
     asyncio.run(build(config_path))
