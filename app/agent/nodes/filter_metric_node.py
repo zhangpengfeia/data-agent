@@ -6,7 +6,7 @@ from app.agent.state import DataAgentState
 from app.core.log import logger
 
 
-async def filter_metric(state: DataAgentState, runtime: Runtime[DataAgentContext]):
+async def filter_metric_node(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     # 1.获取流写入器对象
     write = runtime.stream_writer
     write({"type": "progress", "step": "过滤指标", "status": "running"})

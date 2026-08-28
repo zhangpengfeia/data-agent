@@ -6,7 +6,7 @@ from app.agent.state import DataAgentState
 from app.core.log import logger
 
 
-async def validate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):
+async def validate_sql_node(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     # 1.获取流写入器对象
     write = runtime.stream_writer
     write({"type": "progress", "step": "验证SQL", "status": "running"})
