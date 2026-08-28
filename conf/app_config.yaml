@@ -48,5 +48,5 @@ es:
 
 
 llm:
-  model_name: deepseek-v4-pro
-  api_key: <deepseek_api_key>
+  model_name: qwen3.7-plus
+  api_key: sk-ws-H.ERPHMEX.BV8I.MEUCIQDgPTioXpcmBP61aFBmUChnJbAyrO251Y9nUuTfw0qRYAIgOWMO_9Ts0WDTcLDwIBp2gVoJW8y4BHgkQ4_HczjTtp8
