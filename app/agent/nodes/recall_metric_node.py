@@ -58,4 +58,3 @@ async def recall_metric_node(state: DataAgentState, runtime: Runtime[DataAgentCo
         writer({"type": "progress", "step": "召回指标", "status": "error", "error": str(e)})
         logger.error(e)
         raise e
-    pass

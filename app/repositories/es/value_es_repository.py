@@ -46,3 +46,17 @@ class ValueESRepository:
                 operations.append(asdict(value_info))
                 # 将本批次数据批量写入ES
                 await self.client.bulk(operations=operations)
+
+    async def search(self, keyword: str, score_threshold: float = 0.5, limit: int = 10):
+        # 执行全文检索
+        results = await self.client.search(
+            index=self.idx_name,
+            query={"match": {"value": keyword}},
+            min_score=score_threshold,
+            size=limit,
+        )
+        # 解析检索结果
+        value_infos = [ValueInfo(**hit["_source"]) for hit in results["hits"]["hits"]]
+
+        return value_infos
+   

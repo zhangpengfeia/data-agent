@@ -7,7 +7,7 @@ from app.agent.nodes.generate_sql_node import generate_sql_node
 from app.agent.nodes.filter_metric_node import filter_metric_node
 from app.agent.nodes.filter_table_node import filter_table_node
 from app.agent.nodes.merge_retrieved_info_node import merge_retrieved_info_node
-from app.agent.nodes.recall_value_mode import recall_value_node
+from app.agent.nodes.recall_value_node import recall_value_node
 from app.agent.nodes.recall_metric_node import recall_metric_node
 from app.repositories.es.value_es_repository import ValueESRepository
 from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
