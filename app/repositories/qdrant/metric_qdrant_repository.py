@@ -1,3 +1,4 @@
+from qdrant_client.http.models.models import QueryResponse
 from dataclasses import asdict
 
 from qdrant_client import AsyncQdrantClient
@@ -41,3 +42,17 @@ class MetricQdrantRepository:
             ) for id, embeding, payload in batch]
             await self.client.upsert(collection_name=self.coll_name, points=points)
 
+    async def search(self, embedding: list[float], score_threshold: float = 0.5,
+                     limit: int = 5) -> list[MetricInfo]:
+        results: QueryResponse = await self.client.query_points(
+            collection_name=self.coll_name,
+            query=embedding,
+            score_threshold=score_threshold,
+            limit=limit,
+        )
+    
+        return [
+            MetricInfo(**point.payload)
+            for point in results.points
+            if point.payload is not None
+        ]
