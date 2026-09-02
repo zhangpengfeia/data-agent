@@ -54,6 +54,8 @@ class DataAgentState(TypedDict):
     db_info: DBInfoState
     # 日期信息
     date_info: DateInfoState
+    # 生成SQL节点结果
+    sql: str
 
     # 合并节点结果
     table_infos: list[TableInfoState]  # 表信息
