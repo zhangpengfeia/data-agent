@@ -31,7 +31,7 @@ async def recall_metric_node(state: DataAgentState, runtime: Runtime[DataAgentCo
         # 2.3 得到最终关键词列表 = llm扩展后关键词+state中jieba分词后关键词
         keywords = list(set(keywords + result))
         # 2.4 声明指标信息字典，方便去重，字典key=指标id, value = 指标信息
-        retrieved_metrics = {}
+        retrieved_metrics: dict[str, MetricInfo] = {}
 
         # 2.5 从runtime总获取Embedding客户端，指标向量持久层
         embedding_client = runtime.context["embedding_client"]
@@ -51,7 +51,7 @@ async def recall_metric_node(state: DataAgentState, runtime: Runtime[DataAgentCo
         # 2.7
         writer({"type": "progress", "step": "召回指标", "status": "success"})
         logger.info(f"指标召回信息成功: {list(retrieved_metrics.keys())}")
-        return {"retrieved_metrics": retrieved_metrics}
+        return {"retrieved_metrics": list(retrieved_metrics.values())}
 
 
     except Exception as e:

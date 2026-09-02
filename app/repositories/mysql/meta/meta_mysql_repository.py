@@ -1,3 +1,6 @@
+from app.models.table_info_mysql import TableInfoMySQL
+from sqlalchemy.sql import select
+from app.models.column_info_mysql import ColumnInfoMySQL
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.entities.column_info import ColumnInfo
@@ -34,3 +37,25 @@ class MetaMySQLRepository:
     async def save_column_metric_info_to_meta_db(self, column_metrics:list[ColumnMetric]):
         models = [ColumnMetricMapper.to_model(column_metric) for column_metric in column_metrics]
         self.session.add_all(models)
+    
+    async def get_column_info_by_id(self, column_id: str) -> ColumnInfo:
+        """根据字段ID获取字段信息"""
+        model = await self.session.get(ColumnInfoMySQL, column_id)
+        if model is None:
+            raise ValueError(f"未找到字段元数据: {column_id}")
+        return ColumnInfoMapper.to_entity(model)
+        
+    async def get_key_columns_by_table_id(self, table_id: str):
+        """根据表ID获取主外键字段"""
+        stmt = (select(ColumnInfoMySQL)
+                .where(ColumnInfoMySQL.table_id == table_id)
+                .where(ColumnInfoMySQL.role.in_(['primary_key', 'foreign_key'])))
+        result = await self.session.execute(stmt)
+        return [ColumnInfoMapper.to_entity(model) for model in result.scalars().all()]
+
+    async def get_table_info_by_id(self, table_id: str):
+        """根据表ID获取表信息"""
+        model = await self.session.get(TableInfoMySQL, table_id)
+        if model is None:
+            raise ValueError(f"未找到表元数据: {table_id}")
+        return TableInfoMapper.to_entity(model)

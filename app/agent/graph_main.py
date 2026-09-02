@@ -88,8 +88,10 @@ graph = graph_builder.compile()
 
 # 5. 测试
 if __name__ == "__main__":
-    print(graph.get_graph().draw_mermaid())
+    # print(graph.get_graph().draw_mermaid())
     async def test():
+        state = DataAgentState(query="华北地区去年卖了多少钱？")
+
         dw_mysql_client_manager.init()
         meta_mysql_client_manager.init()
         embedding_client_manager.init()
@@ -107,7 +109,6 @@ if __name__ == "__main__":
                 value_es_repository=ValueESRepository(es_client_manager.client)
 
             )
-            state = DataAgentState(query="你好，我是张三，我想知道北京的天气", context=context)
             async for chunk in graph.astream(input=state, context=context, stream_mode="custom"):
                 print(chunk)
  

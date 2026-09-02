@@ -1,5 +1,5 @@
 from app.entities.value_info import ValueInfo
-from app.agent import llm
+from app.agent.llm import llm
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from app.prompt.prompt_loader import load_prompt
@@ -12,7 +12,7 @@ from app.core.log import logger
 
 
 async def recall_value_node(state: DataAgentState, runtime: Runtime[DataAgentContext]):
-    """召回字段取值节点， 获取真实有效字段取值，解决llm生成sql where部分字段取值"""
+    """召回字段取值节点， 获取真实有效字段取值，解决llm生成sql ，确保where 字段取值正确"""
    
     # 1.获取流写入器对象
     writer = runtime.stream_writer
@@ -47,7 +47,7 @@ async def recall_value_node(state: DataAgentState, runtime: Runtime[DataAgentCon
                 if value_id not in retrieved_values_dict:
                     retrieved_values_dict[value_id] = result
         writer({"type": "progress", "step": "召回字段取值", "status": "success", "message": "召回字段取值完成"})
-        retrieved_values = list(retrieved_values_dict.keys())
+        retrieved_values = list(retrieved_values_dict.values())
         logger.info(f"召回字段取值完成，共召回{len(retrieved_values)}个字段取值")
         # 2.7 更新 state 中的 retrieved_values
         return {"retrieved_values": retrieved_values}
