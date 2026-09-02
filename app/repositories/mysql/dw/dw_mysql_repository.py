@@ -34,3 +34,8 @@ class DWMySQLRepository:
         sql = f"explain {sql}"
         await self.session.execute(text(sql))
         return True
+
+    async def execute_sql(self, sql: str) -> list[dict]:
+        """执行SQL语句 并返回结果"""
+        result = await self.session.execute(text(sql))
+        return [dict(row_mapping) for row_mapping in result.mappings().fetchall()]
