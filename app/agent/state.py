@@ -26,6 +26,18 @@ class MetricInfoState(TypedDict):
     relevant_columns: list[str]
     alias: list[str]
 
+class DBInfoState(TypedDict):
+    """数据库信息"""
+    version: str
+    dialect: str
+
+
+class DateInfoState(TypedDict):
+    """日期信息"""
+    date: str
+    week: str
+    quarter: str
+
 
 class DataAgentState(TypedDict):
     # 提问问题
@@ -38,6 +50,11 @@ class DataAgentState(TypedDict):
     retrieved_metrics: list[MetricInfo]
     # 召回字段取值结果
     retrieved_values: list[ValueInfo]
+    # 数据库信息
+    db_info: DBInfoState
+    # 日期信息
+    date_info: DateInfoState
+
     # 合并节点结果
     table_infos: list[TableInfoState]  # 表信息
     metric_infos: list[MetricInfoState]  # 指标信息

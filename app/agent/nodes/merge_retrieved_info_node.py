@@ -1,5 +1,5 @@
 from app.entities.table_info import TableInfo
-from app.agent.state import TableInfoState
+from app.agent.state import ColumnInfoState, TableInfoState
 from app.entities.value_info import ValueInfo
 from app.entities.column_info import ColumnInfo
 from app.agent.state import MetricInfoState
@@ -68,7 +68,17 @@ async def merge_retrieved_info_node(state: DataAgentState, runtime: Runtime[Data
                 name=table_info.name,
                 role=table_info.role,
                 description=table_info.description,
-                columns=[column_info for column_info in columns]
+                columns=[
+                    ColumnInfoState(
+                        name=column_info.name,
+                        type=column_info.type,
+                        role=column_info.role,
+                        examples=list(column_info.examples),
+                        description=column_info.description,
+                        alias=list(column_info.alias),
+                    )
+                    for column_info in columns
+                ]
             )
             table_infos.append(table_info_state)
 
@@ -88,7 +98,7 @@ async def merge_retrieved_info_node(state: DataAgentState, runtime: Runtime[Data
                 metric_infos.append(metric_info_state)
         write({"type": "progress", "step": "合并召回信息", "status": "success"})
         logger.info(f"合并召回信息成功，表：{table_id_column_info_dict.keys()}")
-        logger.info(f"合并召回信息成功，字段：{[column.name for ti in table_infos for column in ti['columns']]}")
+        logger.info(f"合并召回信息成功，字段：{[column['name'] for ti in table_infos for column in ti['columns']]}")
         logger.info(f"合并召回信息成功，指标：{[metric_info["name"] for metric_info in metric_infos]}")
         return {"metric_infos": metric_infos, "table_infos": table_infos}
     except Exception as e:

@@ -21,3 +21,10 @@ class DWMySQLRepository:
         result: Result = await self.session.execute(text(sql))
         # 结果：一列多行
         return result.scalars().fetchall()
+    
+    async def get_db_info(self) -> dict[str, str]:
+        """查询数据库版本信息"""
+        result: Result = await self.session.execute(text("SELECT VERSION()"))
+        version = str(result.scalar_one())
+        dialect = self.session.get_bind().dialect.name
+        return {"version": version, "dialect": dialect}
