@@ -23,6 +23,7 @@ async def validate_sql_node(state: DataAgentState, runtime: Runtime[DataAgentCon
 
         # 3.返回验证结果
         write({"type": "progress", "step": "验证SQL", "status": "success"})
+        return {"error": None}
     except Exception as e:
         logger.error(f"验证SQL发生异常：{e}")
         write({"type": "progress", "step": "验证SQL", "status": "error"})

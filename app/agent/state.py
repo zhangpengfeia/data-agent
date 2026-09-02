@@ -62,4 +62,4 @@ class DataAgentState(TypedDict):
     metric_infos: list[MetricInfoState]  # 指标信息
 
     # 校验SQL节点 SQL错误信息
-    error: str
+    error: str | None

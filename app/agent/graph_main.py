@@ -28,7 +28,7 @@ from langgraph.graph import StateGraph, END
 
 def route_after_validate_sql(state: DataAgentState) -> str:
     """校验 SQL 后的路由：校验通过 -> 执行 SQL；校验失败 -> 校正 SQL"""
-    if state["error"] is None:
+    if state.get("error") is None:
         return "execute_sql_node"
     return "correct_sql_node"
 
